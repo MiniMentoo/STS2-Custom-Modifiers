@@ -1,0 +1,10 @@
+{
+  "id": "CustomModifiers",
+  "name": "Custom Modifiers",
+  "author": "minimento",
+  "description": "Adds custom run modifiers that you can enable in your custom runs.",
+  "version": "1.0.0",
+  "has_dll": true,
+  "has_pck": false,
+  "affects_gameplay": true
+}
