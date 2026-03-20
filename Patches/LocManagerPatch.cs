@@ -20,7 +20,7 @@ public class LocManagerPatch
                 {"FAMINE.description", "You cannot gain relics."},
                 
                 {"COLOURLESS.title", "Colourless"},
-                {"COLOURLESS.description", "You can only gain colourless cards and generic relics. You lose your starting relic and your starting deck is 5 strikes and 5 defends."},
+                {"COLOURLESS.description", "Lose your class specific cards and relics, you can only draft colourless cards. Lose your starting relic."},
             });
     }
 }

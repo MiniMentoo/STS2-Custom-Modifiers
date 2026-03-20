@@ -16,40 +16,19 @@ namespace CustomModifiers;
 public class Colourless : ModifierModel
 {
 
-    public override bool ClearsPlayerDeck => true;
+    public override bool ClearsPlayerDeck => false;
     
     public override Func<Task> GenerateNeowOption(EventModel eventModel)
     {
         return () =>
         {
+            Debug.Assert(eventModel.Owner != null, "eventModel.Owner != null");
             return SetupColourless(eventModel.Owner);
         };
     }
  
     private static async Task SetupColourless(Player player)
     {
-        var cardTypes = new CardModel[]
-        {
-            ModelDb.Card<StrikeIronclad>(),
-            ModelDb.Card<DefendIronclad>(),
-            ModelDb.Card<StrikeSilent>(),
-            ModelDb.Card<DefendSilent>(),
-            ModelDb.Card<StrikeRegent>(),
-            ModelDb.Card<DefendRegent>(),
-            ModelDb.Card<StrikeNecrobinder>(),
-            ModelDb.Card<DefendNecrobinder>(),
-            ModelDb.Card<StrikeDefect>(),
-            ModelDb.Card<DefendDefect>(),
-        };
-
-        foreach (var canonicalCard in cardTypes)
-        {
-            var card = player.RunState.CreateCard(canonicalCard, player);
-            player.Deck.AddInternal(card);
-        }
-
-        Log.Info("[CustomModifiers] Colourless: Added 10 starting cards");
-        
         var startingRelicTypes = new RelicModel[]
         {
             ModelDb.Relic<BurningBlood>(),
@@ -78,6 +57,31 @@ public class Colourless : ModifierModel
     protected override void AfterRunCreated(RunState runState)
     {
         StripCharacterRelics(runState);
+
+        // Strip non-strike/defend cards from all players' decks before Neow fires,
+        // so other modifiers' Neow options can add cards freely afterward.
+        var targetIds = new HashSet<ModelId>
+        {
+            ModelDb.Card<StrikeIronclad>().Id,
+            ModelDb.Card<DefendIronclad>().Id,
+            ModelDb.Card<StrikeSilent>().Id,
+            ModelDb.Card<DefendSilent>().Id,
+            ModelDb.Card<StrikeRegent>().Id,
+            ModelDb.Card<DefendRegent>().Id,
+            ModelDb.Card<StrikeNecrobinder>().Id,
+            ModelDb.Card<DefendNecrobinder>().Id,
+            ModelDb.Card<StrikeDefect>().Id,
+            ModelDb.Card<DefendDefect>().Id,
+        };
+
+        foreach (var player in runState.Players)
+        {
+            foreach (var card in player.Deck.Cards.Where(c => !targetIds.Contains(c.Id)).ToList())
+            {
+                player.Deck.RemoveInternal(card);
+                runState.RemoveCard(card);
+            }
+        }
     }
     
     protected override void AfterRunLoaded(RunState runState)
