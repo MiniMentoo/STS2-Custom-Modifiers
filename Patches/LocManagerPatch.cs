@@ -17,7 +17,10 @@ public class LocManagerPatch
                 {"VINTAGE_PLUS.description", "Normal enemies drop 2 relics for each card reward." },
                 
                 {"FAMINE.title", "Famine"},
-                {"FAMINE.description", "You cannot gain relics."}
+                {"FAMINE.description", "You cannot gain relics."},
+                
+                {"COLOURLESS.title", "Colourless"},
+                {"COLOURLESS.description", "You can only gain colourless cards and generic relics. You lose your starting relic and your starting deck is 5 strikes and 5 defends."},
             });
     }
 }
