@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
@@ -8,7 +7,6 @@ using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.Models.Relics;
 using MegaCrit.Sts2.Core.Runs;
  
-// ⚠ Replace with the correct namespace for Strike/Defend card models once confirmed
 using MegaCrit.Sts2.Core.Models.Cards;
  
 namespace CustomModifiers;
