@@ -41,24 +41,24 @@ public class AllRelicsX : ModifierModel
 
     private async Task ChooseAndSetupRelic(Player player)
     {
-        var allRelics = ModelDb.AllRelics.ToList();
         RelicModel chosenCanonical;
-
+        //reads from AllRelicsX.json in directory, if not there, picks randomly from all relics to spawn
+        //then writed the json in mods directory. If a player has edited the JSON then it will spawn all
+        //guaranteed spawn relics, and fill the rest of the 5 slots with random other relics from the 
+        //spawn pool.
         if (RunManager.Instance.DailyTime.HasValue)
         {
             var dailyRng = new Rng(player.RunState.Rng.Seed);
-            chosenCanonical = dailyRng.NextItem(allRelics)
-                ?? throw new InvalidOperationException(
-                    "[AllRelicsAreX] No relics available for daily pick");
+            chosenCanonical = AllRelicsXConfig.PickDailyRelic(dailyRng)
+                              ?? throw new InvalidOperationException(
+                                  "[AllRelicsAreX] No relics available for daily pick");
         }
         else
         {
-            var rng = new Rng(player.RunState.Rng.Seed );
-                        rng.Shuffle(allRelics);
-                        var fiveRelics = allRelics.Take(5).ToList();
-                        var picked = await RelicSelectCmd.FromChooseARelicScreen(player, fiveRelics);
-            // gui can't handle ALL the relics at once currently so just randomly generating 5 for now
-            //var picked = await RelicSelectCmd.FromChooseARelicScreen(player, allRelics);
+            
+            var rng = new Rng(player.RunState.Rng.Seed);
+            var fiveRelics = AllRelicsXConfig.BuildSelectionPool(rng);
+            var picked = await RelicSelectCmd.FromChooseARelicScreen(player, fiveRelics);
             
             if (picked == null)
                 throw new InvalidOperationException(
