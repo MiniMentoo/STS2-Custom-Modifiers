@@ -35,7 +35,6 @@ public class SpecializedPlus : ModifierModel
         }
         else
         {
-            // Non-daily singleplayer or multiplayer: each player picks their own card.
             var prefs = new CardSelectorPrefs(
                 new LocString("modifiers", "SPECIALIZED_PLUS.selectionPrompt"), 1)
             {
@@ -45,16 +44,14 @@ public class SpecializedPlus : ModifierModel
 
             var selected = (await CardSelectCmd.FromSimpleGridForRewards(
                     new BlockingPlayerChoiceContext(),
-                    BuildCardList(),
+                    SpecializedPlusConfig.BuildSelectionList(player),
                     player,
                     prefs))
                 .First();
 
-            // GetById is defensive in case the picker returns a mutable copy
             chosenCanonical = ModelDb.GetById<CardModel>(selected.Id);
         }
 
-        // Add 5 copies to this player's deck only
         var results = new List<CardPileAddResult>();
         for (var i = 0; i < 5; i++)
         {

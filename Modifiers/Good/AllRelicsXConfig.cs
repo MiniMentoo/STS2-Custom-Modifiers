@@ -13,6 +13,12 @@ public static class AllRelicsXConfig
 
     private class ConfigData
     {
+        [JsonPropertyName("_readme")]
+        public string Readme { get; set; } =
+            "Add relic IDs to 'guaranteedSpawn' to force them into the selection. " +
+            "Use spawnpool as reference IDs, you can remove these IDs if you don't want them to spawn as options" +
+            "Delete this file to regenerate the reference lists.";
+        
         [JsonPropertyName("guaranteedSpawn")]
         public List<string> GuaranteedSpawn { get; set; } = new();
 

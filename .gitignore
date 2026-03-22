@@ -100,4 +100,4 @@ fabric.properties
 .idea
 bin/
 obj/
-Folder.DotSettings
+Folder.DotSettings*
