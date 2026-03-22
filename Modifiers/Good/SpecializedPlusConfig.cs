@@ -196,7 +196,8 @@ public static class SpecializedPlusConfig
         // All cards from the player's own class, excluding anything already in guaranteed
         var characterCards = player.Character.CardPool.AllCards
             .Where(c => !guaranteedIds.Contains(c.Id))
-            .OrderBy(c => c.Id.Entry)
+            .OrderBy(c => RarityOrder(c.Rarity))
+            .ThenBy((c=> c.Id.Entry))
             .ToList();
 
         // Guaranteed first so they're prominently visible, then class cards
@@ -205,4 +206,13 @@ public static class SpecializedPlusConfig
             .Select(c => new CardCreationResult(c))
             .ToList();
     }
+    
+    private static int RarityOrder(CardRarity rarity) => rarity switch
+    {
+        CardRarity.Basic    => 0,
+        CardRarity.Common   => 1,
+        CardRarity.Uncommon => 2,
+        CardRarity.Rare     => 3,
+        _                   => 4
+    };
 }
