@@ -4,6 +4,7 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Random;
+using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves.Runs;
 
@@ -88,6 +89,10 @@ public class AllRelicsX : ModifierModel
         var modifier = GetModifier(player.RunState);
         if (modifier == null || !modifier.HasChosenRelic) return;
         if (relic.Id == modifier.ChosenRelicId) return;
+        
+        if (player.RunState is RunState rs2 &&
+            rs2.CurrentRoom is EventRoom eventRoom &&
+            eventRoom.LocalMutableEvent is AncientEventModel) return;
 
         var canonical = ModelDb.GetById<RelicModel>(modifier.ChosenRelicId);
         _preSwapRelic = relic;          // save original so postfix can restore it as return value
