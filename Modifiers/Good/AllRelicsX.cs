@@ -21,8 +21,7 @@ public class AllRelicsX : ModifierModel
     [SavedProperty]
     public ModelId ChosenRelicId
     {
-        get => _chosenRelicId ?? throw new InvalidOperationException(
-            "[AllRelicsAreX] ChosenRelicId accessed before it was set!");
+        get => _chosenRelicId ?? ModelId.none;
         set
         {
             AssertMutable();
@@ -30,7 +29,7 @@ public class AllRelicsX : ModifierModel
         }
     }
 
-    private bool HasChosenRelic => _chosenRelicId != null;
+    private bool HasChosenRelic => _chosenRelicId != null && _chosenRelicId != ModelId.none;
 
     public override Func<Task> GenerateNeowOption(EventModel eventModel)
     {
@@ -139,7 +138,12 @@ public class AllRelicsX : ModifierModel
         __result = ModelDb.GetById<RelicModel>(modifier.ChosenRelicId);
         Log.Info($"[AllRelicsAreX] Redirected PullFromBack to {__result.Id}");
     }
-
+    
+    protected override void AfterRunLoaded(RunState runState)
+    {
+        Log.Info($"[AllRelicsAreX] AfterRunLoaded — HasChosenRelic: {HasChosenRelic}, Id: {(ChosenRelicId?.ToString() ?? "null")}");
+    }
+    
 
     private static AllRelicsX? GetModifier(IRunState runState)
     {
