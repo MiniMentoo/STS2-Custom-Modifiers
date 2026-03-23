@@ -18,8 +18,8 @@ public static class SpecializedPlusConfig
     {
         [JsonPropertyName("_readme")]
         public string Readme { get; set; } =
-            "Add card IDs to 'guaranteedSpawn' to force them into the selection. " +
-            "The other fields are reference-only — browse them to find IDs to copy. " +
+            "Add card IDs to guaranteedSpawn to force them into the selection. " +
+            "The other fields are reference-only, browse them to find IDs to copy. " +
             "Delete this file to regenerate the reference lists.";
 
 

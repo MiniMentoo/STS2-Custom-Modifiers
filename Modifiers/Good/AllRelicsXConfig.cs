@@ -16,7 +16,7 @@ public static class AllRelicsXConfig
         [JsonPropertyName("_readme")]
         public string Readme { get; set; } =
             "Add relic IDs to 'guaranteedSpawn' to force them into the selection. " +
-            "Use spawnpool as reference IDs, you can remove these IDs if you don't want them to spawn as options" +
+            "Use spawnPool as reference IDs, you can remove these IDs if you want them to stop spawning as options. " +
             "Delete this file to regenerate the reference lists.";
         
         [JsonPropertyName("guaranteedSpawn")]
